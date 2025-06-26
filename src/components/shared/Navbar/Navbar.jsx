@@ -184,7 +184,7 @@ export default function Navbar() {
         {/* Logo with glow effect */}
         <Link href="#" className="relative group">
           <div className="text-white text-xl font-bold tracking-wider">
-            <span className="text-cyan-400">MAHFUJ</span>.DEV
+            <span className="text-cyan-400">MAFUJUR</span>.DEV
           </div>
           <div className="absolute -bottom-1 left-0 w-full h-0.5 bg-gradient-to-r from-cyan-400 to-emerald-400 rounded-full transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
           <div className="absolute -inset-2 rounded-full bg-cyan-400/10 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
