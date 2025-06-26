@@ -247,7 +247,7 @@ export default function Banner() {
         <div className="space-y-6">
           <div className="overflow-hidden">
             <h1 className="main-title text-6xl md:text-8xl font-extrabold leading-tight">
-              <span className="text-gray-400 block">I'M A</span>
+              <span className="text-gray-400 block">I'm a</span>
               <span ref={developerRef} className="block bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-emerald-400">
                 Developer
               </span>
