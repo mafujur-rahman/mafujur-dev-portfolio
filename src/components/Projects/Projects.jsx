@@ -33,6 +33,12 @@ export default function Projects() {
       description: 'Transforming data collection with smart, secure, and user-friendly survey tools.',
     },
     {
+      image: '/images/cyber.png',
+      link: 'https://dapper-nougat-3c2417.netlify.app/',
+      company: 'Cyber Security',
+      description: 'Enhancing digital protection with smart, secure, and user-friendly cybersecurity solutions.',
+    },
+    {
       image: '/images/fardeen.png',
       link: 'https://fardeen-sir-portfolio.netlify.app/',
       company: 'Portfolio',
