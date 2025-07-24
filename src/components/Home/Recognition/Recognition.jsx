@@ -234,6 +234,7 @@ export default function Recognition() {
 
   return (
     <section 
+    id="achivement"
       ref={containerRef}
       className="relative py-24 px-4 bg-black text-white overflow-hidden min-h-screen flex items-center"
     >

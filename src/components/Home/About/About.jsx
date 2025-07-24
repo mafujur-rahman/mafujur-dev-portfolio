@@ -159,7 +159,7 @@ export default function AboutMe() {
           {Array.from({ length: 100 }).map((_, i) => (
             <div 
               key={i}
-              className="grid-cell border border-cyan-400/10"
+              className="grid-cell border border-[#09e5e5]/10"
             />
           ))}
         </div>
@@ -169,7 +169,7 @@ export default function AboutMe() {
           {Array.from({ length: 40 }).map((_, i) => (
             <div
               key={i}
-              className="floating-particle absolute rounded-full bg-cyan-400/20"
+              className="floating-particle absolute rounded-full bg-[#09e5e5]/20"
               style={{
                 width: `${gsap.utils.random(1, 3)}px`,
                 height: `${gsap.utils.random(1, 3)}px`,
@@ -183,7 +183,7 @@ export default function AboutMe() {
         {/* Central hologram */}
         <div 
           ref={hologramRef}
-          className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[80vw] max-w-[600px] max-h-[600px] rounded-full border-4 border-cyan-400/20 pointer-events-none"
+          className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[80vw] max-w-[600px] max-h-[600px] rounded-full border-4 border-[#09e5e5]/20 pointer-events-none"
           style={{
             background: 'radial-gradient(circle, rgba(0,247,255,0.05) 0%, transparent 70%)',
             boxShadow: 'inset 0 0 100px rgba(0,247,255,0.1), 0 0 200px rgba(0,247,255,0.1)'
@@ -196,7 +196,7 @@ export default function AboutMe() {
             {/* Quote section */}
             <div 
               ref={quoteRef}
-              className="backdrop-blur-lg bg-gradient-to-br from-gray-900/50 to-black/50 border border-cyan-400/20 rounded-3xl p-8 md:p-12 shadow-[0_0_40px_rgba(0,247,255,0.2)]"
+              className="backdrop-blur-lg bg-gradient-to-br from-gray-900/50 to-black/50 border border-[#09e5e5]/20 rounded-3xl p-8 md:p-12 shadow-[0_0_40px_rgba(0,247,255,0.2)]"
             >
               {/* Holographic border */}
               <div className="absolute inset-0 rounded-3xl overflow-hidden z-0">
@@ -206,18 +206,18 @@ export default function AboutMe() {
               <div className="relative z-10">
                 {/* Divider with Quote Icon */}
                 <div className='flex gap-x-4 items-center mb-8'>
-                  <div className='divider-line h-[1px] bg-gradient-to-r from-transparent via-cyan-400 to-transparent w-full origin-left'></div>
-                  <div className="bg-cyan-400/20 p-3 rounded-full border border-cyan-400/30">
-                    <BiSolidQuoteLeft className='text-cyan-400 text-2xl' />
+                  <div className='divider-line h-[1px] bg-gradient-to-r from-transparent via-[#09e5e5] to-transparent w-full origin-left'></div>
+                  <div className="bg-[#09e5e5]/20 p-3 rounded-full border border-[#09e5e5]/30">
+                    <BiSolidQuoteLeft className='text-[#09e5e5] text-2xl' />
                   </div>
-                  <div className='divider-line h-[1px] bg-gradient-to-r from-transparent via-cyan-400 to-transparent w-full origin-right'></div>
+                  <div className='divider-line h-[1px] bg-gradient-to-r from-transparent via-[#09e5e5] to-transparent w-full origin-right'></div>
                 </div>
 
                 {/* About Me Text */}
                 <div className='space-y-8'>
                   <p className='reveal-paragraph text-xl md:text-2xl leading-relaxed text-gray-300'>
                     {splitWords("Hi, I'm ")}
-                    <span className="name-highlight inline-block bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-emerald-400 font-bold">
+                    <span className="name-highlight inline-block bg-clip-text text-transparent bg-gradient-to-r from-[#09e5e5] to-emerald-400 font-bold">
                       Mafujur Rahman
                     </span>
                     {splitWords(" — a passionate Frontend Developer who loves crafting interactive, user-friendly web experiences using modern technologies.")}
@@ -228,9 +228,9 @@ export default function AboutMe() {
                   </p>
                   
                   <div className='flex items-center gap-4'>
-                    <div className="w-3 h-3 rounded-full bg-cyan-400 "></div>
-                    <p className='text-cyan-400 italic text-xl md:text-2xl'>
-                      <span className="title-gradient bg-clip-text  bg-[length:200%_100%] bg-gradient-to-r from-transparent via-cyan-400 to-cyan-400">
+                    <div className="w-3 h-3 rounded-full bg-[#09e5e5] "></div>
+                    <p className='text-[#09e5e5] italic text-xl md:text-2xl'>
+                      <span className="title-gradient bg-clip-text  bg-[length:200%_100%] bg-gradient-to-r from-transparent via-[#09e5e5] to-[#09e5e5]">
                         {splitWords("Frontend Developer")} 
                       </span>
                     </p>
@@ -241,12 +241,12 @@ export default function AboutMe() {
             
             {/* Tech stack floating orbs */}
             <div className="mt-16 flex flex-wrap justify-center gap-6">
-              {['React', 'Next.js', 'GSAP', 'Three.js', 'Tailwind', 'WebGL', 'AI/ML', 'Web3'].map((tech, i) => (
+              {[ 'MongoDB', 'Express.js', 'React',  'Node.js'].map((tech, i) => (
                 <div 
                   key={i}
-                  className="relative w-20 h-20 rounded-full bg-gradient-to-br from-cyan-900/30 to-black/50 backdrop-blur-sm border border-cyan-400/20 flex items-center justify-center shadow-[0_0_20px_rgba(0,247,255,0.2)]"
+                  className="relative w-20 h-20 rounded-full bg-gradient-to-br from-cyan-900/30 to-black/50 backdrop-blur-sm border border-[#09e5e5]/20 flex items-center justify-center shadow-[0_0_20px_rgba(0,247,255,0.2)]"
                 >
-                  <div className="absolute inset-0 rounded-full bg-cyan-400/10 blur-md animate-pulse"></div>
+                  <div className="absolute inset-0 rounded-full bg-[#09e5e5]/10 blur-md animate-pulse"></div>
                   <span className="text-cyan-300 font-medium text-sm text-center">{tech}</span>
                 </div>
               ))}

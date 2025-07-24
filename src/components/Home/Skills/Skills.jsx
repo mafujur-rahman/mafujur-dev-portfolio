@@ -8,31 +8,31 @@ gsap.registerPlugin(ScrollTrigger)
 const skillDetails = [
   {
     title: 'React & Next.js',
-    description: 'Expert in building modern, scalable applications with React hooks, context API, and Next.js features like SSR, SSG, and API routes.',
+    description: 'Expert in building modern, scalable applications with React hooks, context API, and Next.js features.',
     level: 92,
     projects: 15,
-    years: 3
+    years: '1+'
   },
   {
     title: 'Tailwind CSS',
     description: 'Highly proficient in crafting responsive, utility-first UI designs with Tailwind CSS, including custom configurations and plugin development.',
     level: 95,
     projects: 22,
-    years: 2
+    years: '1+'
   },
   {
     title: 'JavaScript (ES6+)',
     description: 'Deep understanding of modern JavaScript including ES6+ features, asynchronous programming, DOM manipulation, and functional programming.',
     level: 90,
     projects: 30,
-    years: 4
+    years: '1.5+'
   },
   {
     title: 'Frontend Integration',
     description: 'Specialized in integrating REST/GraphQL APIs, state management solutions, and third-party services for seamless UI functionality.',
     level: 88,
     projects: 18,
-    years: 3
+    years: '1.5+'
   }
 ]
 
@@ -255,7 +255,7 @@ export default function Skills() {
   }, [])
 
   return (
-    <section className="relative overflow-hidden bg-black py-32">
+    <section id='skills' className="relative overflow-hidden bg-black py-32">
       {/* Holographic grid background */}
       <div
         ref={gridRef}
@@ -375,9 +375,9 @@ export default function Skills() {
           <h3 className="text-2xl font-bold text-cyan-300 mb-8 text-center">Technical Mastery</h3>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {[
-              { label: 'Frontend Frameworks', value: 'React, Next.js, Vue' },
-              { label: 'UI Libraries', value: 'Tailwind, Material UI, Framer Motion' },
-              { label: 'State Management', value: 'Redux, Zustand, Context API' },
+              { label: 'Frontend Frameworks', value: 'React, Next.js' },
+              { label: 'UI Libraries', value: 'Tailwind, Material UI, Framer Motion, GSAP' },
+              { label: 'State Management', value: 'Redux, Context API' },
               { label: 'API Integration', value: 'REST, GraphQL, Axios' }
             ].map((item, idx) => (
               <div
@@ -396,7 +396,7 @@ export default function Skills() {
         <div className="mt-16 max-w-4xl mx-auto">
           <h3 className="text-xl font-bold text-cyan-300 mb-6 text-center">Additional Technologies</h3>
           <div className="flex flex-wrap justify-center gap-4">
-            {['TypeScript', 'GSAP', 'Three.js', 'Figma', 'Jest', 'Webpack', 'Git', 'CI/CD'].map((tech, i) => (
+            {['TypeScript', 'GSAP', 'Figma',  'Git', ].map((tech, i) => (
               <div
                 key={i}
                 className="px-5 py-2 bg-gray-800/50 backdrop-blur-sm rounded-full border border-cyan-400/20 text-gray-300 hover:text-cyan-300 transition-colors"
@@ -418,7 +418,7 @@ export default function Skills() {
               width: `${gsap.utils.random(2, 6)}px`,
               height: `${gsap.utils.random(2, 6)}px`,
               top: `${gsap.utils.random(0, 100)}%`,
-              left: `${gsap.utils.random(0, 100)}%`, // ✅ Fixed line
+              left: `${gsap.utils.random(0, 100)}%`,
             }}
           />
         ))}

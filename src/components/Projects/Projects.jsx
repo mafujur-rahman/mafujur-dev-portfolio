@@ -7,86 +7,100 @@ import Image from 'next/image'
 gsap.registerPlugin(ScrollTrigger)
 
 export default function Projects() {
-const ProjectsData = [
-  {
-    image: '/images/company/NovaTech.jpg',
-    title: 'Rayhan Karim',
-    link: 'https://linkedin.com/in/rayhankarim',
-    location: 'Toronto, Canada',
-    company: 'NovaTech Labs',
-    description: 'Innovating smart IoT solutions for smart cities',
-    tech: ['IoT', 'Edge Computing', 'Cloud']
-  },
-  {
-    image: '/images/company/LearnSphere.jpg',
-    title: 'Anika Chowdhury',
-    link: 'https://linkedin.com/in/anikac',
-    location: 'Melbourne, Australia',
-    company: 'LearnSphere',
-    description: 'Interactive learning ecosystems for modern education',
-    tech: ['E-Learning', 'Gamification', 'React']
-  },
-  {
-    image: '/images/company/CryptoBay.jpg',
-    title: 'David Kim',
-    link: 'https://example.com/davidkim',
-    location: 'Seoul, South Korea',
-    company: 'CryptoBay',
-    description: 'Next-gen crypto portfolio management platform',
-    tech: ['Crypto', 'Web3', 'Smart Contracts']
-  },
-  {
-    image: '/images/company/Medilink.jpg',
-    title: 'Sophia Green',
-    link: 'https://example.com/sophiagreen',
-    location: 'Berlin, Germany',
-    company: 'MediLink Solutions',
-    description: 'Secure digital healthcare data exchange',
-    tech: ['HealthTech', 'Blockchain', 'Cybersecurity']
-  },
-  {
-    image: '/images/company/SkillUp.jpg',
-    title: 'Yusuf Hammad',
-    link: 'https://linkedin.com/in/yusufh',
-    location: 'Lagos, Nigeria',
-    company: 'SkillUp Africa',
-    description: 'Bridging tech skill gaps through remote learning',
-    tech: ['EdTech', 'Video Streaming', 'AI']
-  },
-  {
-    image: '/images/company/DataNest.jpg',
-    title: 'Emma Li',
-    link: 'https://example.com/emma-li',
-    location: 'Singapore',
-    company: 'DataNest Analytics',
-    description: 'Smart data warehousing and visualization tools',
-    tech: ['Data Engineering', 'BI Tools', 'D3.js']
-  }
-];
+  const ProjectsData = [
+    {
+      image: '/images/ethicalden.png',
+      link: 'https://ethicalden-gsap.netlify.app/',
+      company: 'Ethicalden',
+      description: 'Crafting data-driven digital marketing campaigns that boost brand visibility and ROI.',
+    },
+    {
+      image: '/images/fowzi.png',
+      link: 'https://fowzi-media-client-qxuw.vercel.app/',
+      company: 'Fowzi Media',
+      description: 'Delivering performance-focused marketing solutions across social and digital platforms.',
+    },
+    {
+      image: '/images/newsgrid.png',
+      link: 'https://newsgrid-95245.web.app/',
+      company: 'Newsgrid',
+      description: 'Delivering real-time, dynamic news aggregation tailored for global audiences.',
+    },
+    {
+      image: '/images/survey.png',
+      link: 'https://survey-shark-ccd5f.web.app/',
+      company: 'Survey Shark',
+      description: 'Transforming data collection with smart, secure, and user-friendly survey tools.',
+    },
+    {
+      image: '/images/fardeen.png',
+      link: 'https://fardeen-sir-portfolio.netlify.app/',
+      company: 'Portfolio',
+      description: 'Crafting impactful personal branding through clean, modern digital portfolios.',
+    }
+  ];
 
 
-  const marqueeRef = useRef(null)
-  const textBlockRef = useRef(null)
+
   const cardRefs = useRef([])
   const particleRef = useRef(null)
   const hologramRef = useRef(null)
+  const titleRef = useRef(null)
+  const titleMaskRef = useRef(null)
+  const subtitleRef = useRef(null)
 
   useEffect(() => {
-    // Marquee animation
-    const marquee = marqueeRef.current
-    const textBlock = textBlockRef.current
-    if (!marquee || !textBlock) return
 
-    const width = textBlock.offsetWidth
-    gsap.set(marquee, { x: 0 })
 
-    gsap.to(marquee, {
-      x: -width,
-      duration: 20,
-      ease: 'linear',
-      repeat: -1,
-    })
-    
+    // Title reveal animation - new gradient slide effect
+    gsap.fromTo(titleMaskRef.current,
+      { height: '100%' },
+      {
+        height: '0%',
+        duration: 1.5,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: titleRef.current,
+          start: 'top 85%',
+          toggleActions: 'play none none none'
+        }
+      }
+    )
+
+    // Title fade in animation
+    gsap.fromTo(titleRef.current,
+      { opacity: 0, y: 20 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 1,
+        delay: 0.3,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: titleRef.current,
+          start: 'top 85%',
+          toggleActions: 'play none none none'
+        }
+      }
+    )
+
+    // Subtitle animation
+    gsap.fromTo(subtitleRef.current,
+      { opacity: 0, y: 20 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 1,
+        delay: 0.5,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: titleRef.current,
+          start: 'top 85%',
+          toggleActions: 'play none none none'
+        }
+      }
+    )
+
     // Card animations
     cardRefs.current.forEach((card, i) => {
       gsap.fromTo(card,
@@ -111,7 +125,7 @@ const ProjectsData = [
           }
         }
       )
-      
+
       // Hover effect
       card.addEventListener('mouseenter', () => {
         gsap.to(card, {
@@ -119,12 +133,12 @@ const ProjectsData = [
           boxShadow: "0 0 40px rgba(0, 247, 255, 0.5)",
           duration: 0.5
         })
-        
+
         const particles = Array.from({ length: 10 }, () => {
           const particle = document.createElement("div")
           particle.className = "holographic-particle"
           card.appendChild(particle)
-          
+
           gsap.fromTo(particle,
             { opacity: 1, scale: 0 },
             {
@@ -136,11 +150,11 @@ const ProjectsData = [
               onComplete: () => particle.remove()
             }
           )
-          
+
           return particle
         })
       })
-      
+
       card.addEventListener('mouseleave', () => {
         gsap.to(card, {
           y: 0,
@@ -149,7 +163,7 @@ const ProjectsData = [
         })
       })
     })
-    
+
     // Floating particles
     const particles = gsap.utils.toArray('.floating-particle')
     particles.forEach((particle, i) => {
@@ -161,7 +175,7 @@ const ProjectsData = [
         ease: "sine.inOut"
       })
     })
-    
+
     // Hologram animation
     gsap.to(hologramRef.current, {
       rotation: 360,
@@ -169,7 +183,8 @@ const ProjectsData = [
       repeat: -1,
       ease: "none"
     })
-    
+
+
     // Background grid animation
     const gridItems = gsap.utils.toArray('.grid-cell')
     gridItems.forEach((item, i) => {
@@ -190,17 +205,17 @@ const ProjectsData = [
   }, [])
 
   return (
-    <div className='relative overflow-hidden bg-black min-h-screen py-20'>
+    <div id='projects' className='relative overflow-hidden bg-black min-h-screen py-20'>
       {/* Holographic grid background */}
       <div className="absolute inset-0 grid grid-cols-10 grid-rows-10 pointer-events-none">
         {Array.from({ length: 100 }).map((_, i) => (
-          <div 
+          <div
             key={i}
             className="grid-cell border border-cyan-400/10"
           />
         ))}
       </div>
-      
+
       {/* Floating particles */}
       <div className="absolute inset-0 pointer-events-none">
         {Array.from({ length: 40 }).map((_, i) => (
@@ -216,9 +231,9 @@ const ProjectsData = [
           />
         ))}
       </div>
-      
+
       {/* Central hologram */}
-      <div 
+      <div
         ref={hologramRef}
         className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[80vw] max-w-[600px] max-h-[600px] rounded-full border-4 border-cyan-400/20 pointer-events-none"
         style={{
@@ -226,127 +241,79 @@ const ProjectsData = [
           boxShadow: 'inset 0 0 100px rgba(0,247,255,0.1), 0 0 200px rgba(0,247,255,0.1)'
         }}
       />
-      
-      {/* Scrolling Title */}
-      <div className="overflow-hidden whitespace-nowrap py-12">
-        <div ref={marqueeRef} className="inline-flex">
-          <h1
-            ref={textBlockRef}
-            className="text-stroke text-6xl sm:text-7xl md:text-8xl font-bold px-10 select-none"
-            style={{
-              background: 'linear-gradient(to right, #00f7ff, #00ffb3)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextStroke: '2px transparent',
-              color: 'transparent'
-            }}
-          >
-            FEATURED PROJECTS • FEATURED PROJECTS • FEATURED PROJECTS • 
-          </h1>
-          <h1
-            aria-hidden="true"
-            className="text-stroke text-6xl sm:text-7xl md:text-8xl font-bold px-10 select-none"
-            style={{
-              background: 'linear-gradient(to right, #00f7ff, #00ffb3)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextStroke: '2px transparent',
-              color: 'transparent'
-            }}
-          >
-            FEATURED PROJECTS • FEATURED PROJECTS • FEATURED PROJECTS • 
-          </h1>
+
+      {/* Section Title - Fixed with new animation */}
+      <div className="text-center mb-20 relative z-20">
+        <div className="relative inline-block">
+          <h2 ref={titleRef} className="text-5xl md:text-7xl font-bold tracking-tighter mb-6 bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-emerald-400">
+            Projects
+          </h2>
+          <div
+            ref={titleMaskRef}
+            className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-black to-black z-10"
+          />
         </div>
+        <p ref={subtitleRef} className="text-xl text-gray-400 max-w-2xl mx-auto">
+          Showcasing advanced technical expertise and creative solutions to build outstanding digital experiences.
+        </p>
+        <div className="holographic-line mt-10 h-0.5 w-full max-w-2xl mx-auto bg-gradient-to-r from-cyan-400/0 via-cyan-400 to-cyan-400/0" />
       </div>
 
       {/* Company Cards - Holographic Display */}
-      <div 
+      <div
         ref={particleRef}
         className='relative z-10 max-w-7xl mx-auto px-4 md:px-8 pb-[15vh]'
       >
         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'>
           {ProjectsData.map((company, index) => (
-            <div
+            <a
               key={index}
               ref={el => cardRefs.current[index] = el}
-              className="relative overflow-hidden rounded-2xl border border-cyan-400/20 bg-gradient-to-br from-gray-900/50 to-black/50 backdrop-blur-lg shadow-[0_0_20px_rgba(0,247,255,0.2)]"
+              href={company.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="relative overflow-hidden rounded-2xl border border-cyan-400/20 bg-gradient-to-br from-gray-900/50 to-black/50 backdrop-blur-lg shadow-[0_0_20px_rgba(0,247,255,0.2)] group block"
             >
               {/* Holographic border */}
-              <div className="absolute inset-0 rounded-2xl overflow-hidden">
+              <div className="absolute inset-0 rounded-2xl overflow-hidden pointer-events-none">
                 <div className="absolute inset-0 bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,#00f7ff_25%,transparent_50%)] animate-spin-slow opacity-30"></div>
               </div>
-              
-              {/* Card content */}
-              <a
-                href={company.link}
-                target='_blank'
-                rel='noopener noreferrer'
-                className="group block h-full"
-              >
-                {/* Image with holographic overlay */}
-                <div className='relative w-full h-[250px] rounded-t-2xl overflow-hidden'>
-                  <div className="absolute inset-0 z-10 bg-gradient-to-b from-transparent to-black/80"></div>
-                  <Image
-                    src={company.image}
-                    alt={company.title}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-700"
-                  />
-                  
-                  {/* Tech tags */}
-                  <div className="absolute top-4 right-4 z-20 flex flex-wrap justify-end gap-2">
-                    {company.tech.map((tech, i) => (
-                      <span 
-                        key={i} 
-                        className="px-3 py-1 bg-cyan-900/50 backdrop-blur-sm rounded-full text-cyan-300 text-xs border border-cyan-400/20"
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-                  
-                  {/* Company name overlay */}
-                  <div className="absolute bottom-0 left-0 w-full p-4 z-20">
-                    <h3 className="text-xl font-bold text-cyan-300">{company.company}</h3>
-                    <p className="text-gray-300 text-sm">{company.location}</p>
+
+              {/* Image with overlay */}
+              <div className='relative w-full h-[250px] rounded-t-2xl overflow-hidden'>
+                <div className="absolute inset-0 z-10 bg-gradient-to-b from-transparent to-black/80"></div>
+                <Image
+                  src={company.image}
+                  alt={company.title}
+                  fill
+                  className="object-cover group-hover:scale-105 transition-transform duration-700"
+                />
+              </div>
+
+              {/* Text Content */}
+              <div className="p-6 relative z-10">
+                <div className="flex items-center mb-4">
+                  <h3 className="text-xl font-bold text-cyan-300">{company.company}</h3>
+                </div>
+                <p className="text-gray-300 text-sm mb-4">{company.description}</p>
+
+                <div className="flex justify-between items-center">
+                  <div className="text-cyan-400 text-sm">View Project</div>
+                  <div className="w-8 h-8 rounded-full border border-cyan-400 flex items-center justify-center">
+                    <svg className="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                    </svg>
                   </div>
                 </div>
-                
-                {/* Card details */}
-                <div className="p-6">
-                  <div className="flex items-center mb-4">
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-r from-cyan-400 to-emerald-400 flex items-center justify-center text-black font-bold mr-3">
-                      {company.title.charAt(0)}
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-white">{company.title}</h4>
-                      <p className="text-cyan-400 text-sm">Project Lead</p>
-                    </div>
-                  </div>
-                  
-                  <p className="text-gray-300 text-sm mb-4">{company.description}</p>
-                  
-                  <div className="flex justify-between items-center">
-                    <div className="text-cyan-400 text-sm">View Project</div>
-                    <div className="w-8 h-8 rounded-full border border-cyan-400 flex items-center justify-center">
-                      <svg className="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
-                      </svg>
-                    </div>
-                  </div>
-                </div>
-              </a>
-            </div>
+              </div>
+            </a>
+
           ))}
         </div>
       </div>
-      
-      {/* Floating CTA */}
-      <div className="relative z-20 text-center pb-20">
-        <button className="px-8 py-4 bg-gradient-to-r from-cyan-600 to-emerald-500 rounded-full text-white font-bold tracking-wider text-lg shadow-[0_0_30px_rgba(0,247,255,0.5)] hover:shadow-[0_0_50px_rgba(0,247,255,0.8)] transition-all duration-300">
-          VIEW ALL PROJECTS
-        </button>
-        <p className="text-gray-400 mt-6">Explore my full portfolio of futuristic solutions</p>
-      </div>
-      
+
+
+
       <style jsx global>{`
         .holographic-particle {
           position: absolute;

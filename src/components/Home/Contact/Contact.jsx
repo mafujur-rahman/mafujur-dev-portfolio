@@ -160,6 +160,7 @@ export default function Contact() {
   return (
     <>
       <section
+        id='contact'
         ref={sectionRef}
         className="relative min-h-screen bg-black px-6 py-24 md:py-32 lg:px-24 text-white flex justify-center overflow-hidden"
         aria-label="Contact section"

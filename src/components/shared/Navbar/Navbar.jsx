@@ -1,265 +1,246 @@
-'use client'
-import { useEffect, useRef, useState } from 'react'
-import gsap from 'gsap'
-import Link from 'next/link'
+'use client';
 
-export default function Navbar() {
-  const navItemsRef = useRef([])
-  const [activeSection, setActiveSection] = useState('home')
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const navbarRef = useRef(null)
-  const particlesRef = useRef([])
+import { useState, useRef, useEffect } from 'react';
+import { gsap } from 'gsap';
+import { GoArrowUpRight } from 'react-icons/go';
 
-  const links = ['About', 'Skills', 'Projects']
+export const Navbar = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const menuRef = useRef(null);
+  const navbarRef = useRef(null);
+  const contactBtnRef = useRef(null);
+  const iconRef = useRef(null);
+  let glowTween = useRef(null);
+  let bgTween = useRef(null);
 
-  // Hover animation
   useEffect(() => {
-    navItemsRef.current.forEach((el, index) => {
-      if (!el) return
-
-      const highlight = el.querySelector('.nav-highlight')
-
-      el.addEventListener('mouseenter', () => {
-        gsap.to(highlight, {
-          width: '100%',
-          duration: 0.4,
-          ease: 'power3.out'
-        })
-        
-        gsap.to(el, {
-          color: '#00f7ff',
+    if (menuRef.current) {
+      if (isMenuOpen) {
+        gsap.fromTo(
+          menuRef.current,
+          { y: -100, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.4, ease: 'power2.out' }
+        );
+      } else {
+        gsap.to(menuRef.current, {
+          y: -100,
+          opacity: 0,
           duration: 0.3,
-          ease: 'power2.out'
-        })
-      })
-
-      el.addEventListener('mouseleave', () => {
-        if (links[index].toLowerCase() === activeSection) return 
-        
-        gsap.to(highlight, {
-          width: '0%',
-          duration: 0.4,
-          ease: 'power3.inOut'
-        })
-        
-        gsap.to(el, {
-          color: '#ffffff',
-          duration: 0.3,
-          ease: 'power2.out'
-        })
-      })
-    })
-  }, [activeSection])
-
-  // Active route observer
-  useEffect(() => {
-    const sectionIds = links.map(link => link.toLowerCase())
-    const observer = new IntersectionObserver(
-      entries => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            setActiveSection(entry.target.id)
-          }
-        })
-      },
-      {
-        rootMargin: '-50% 0px -40%',
-        threshold: 0.3
+          ease: 'power2.in',
+        });
       }
-    )
+    }
+  }, [isMenuOpen]);
 
-    sectionIds.forEach(id => {
-      const section = document.getElementById(id)
-      if (section) observer.observe(section)
-    })
-
-    return () => observer.disconnect()
-  }, [])
-
-  // Floating particles animation
   useEffect(() => {
-    particlesRef.current.forEach((particle, i) => {
-      gsap.to(particle, {
-        y: (i % 2 === 0 ? -5 : 5),
-        duration: 2 + Math.random() * 2,
+    const tl = gsap.timeline({ delay: 0.8 });
+    tl.fromTo(
+      navbarRef.current,
+      { y: -50, opacity: 0 },
+      { y: 0, opacity: 1, duration: 1, ease: 'power3.out' }
+    );
+
+    const handleClickOutside = (event) => {
+      if (
+        menuRef.current &&
+        !menuRef.current.contains(event.target) &&
+        !event.target.closest('.menu-button')
+      ) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      tl.kill();
+    };
+  }, []);
+
+  useEffect(() => {
+    const btn = contactBtnRef.current;
+    const icon = iconRef.current;
+
+    if (!btn || !icon) return;
+
+    const onHoverIn = () => {
+      // Animate background color from white to gradient-like solid color with GSAP
+      if (bgTween.current) bgTween.current.kill();
+
+      bgTween.current = gsap.to(btn, {
+        duration: 0.8,
+        backgroundColor: '#a8ff57', // starting green-ish
+        ease: 'power2.out',
+        onUpdate: () => {
+          // We'll do a smooth color transition via GSAP’s backgroundColor tweening
+        },
+      });
+
+      // Glow pulse (box-shadow)
+      glowTween.current = gsap.to(btn, {
+        boxShadow:
+          '0 0 12px 4px rgba(168,255,87,0.7), 0 0 24px 8px rgba(9,229,229,0.5)',
+        duration: 1.5,
         repeat: -1,
         yoyo: true,
-        ease: "sine.inOut"
+        ease: 'sine.inOut',
       });
-    });
-  }, [])
 
-  // Mobile menu toggle animation
-  useEffect(() => {
-    if (mobileMenuOpen) {
-      // Open animation
-      gsap.to('.mobile-menu', {
-        height: '100vh',
-        opacity: 1,
+      // Animate arrow icon slide and rotate (small movement)
+      gsap.to(icon, {
+        x: 8,
+        y: -4,
+        rotation: 15,
         duration: 0.6,
-        ease: 'power3.out'
-      })
-      
-      gsap.fromTo('.mobile-link',
-        { opacity: 0, y: 20 },
-        {
-          opacity: 1,
-          y: 0,
-          stagger: 0.1,
-          duration: 0.5,
-          ease: 'back.out(1.7)'
-        }
-      )
-      
-      // Hamburger to X animation
-      gsap.to('.hamburger-top', {
-        y: 6,
-        rotate: 45,
-        duration: 0.3
-      })
-      
-      gsap.to('.hamburger-middle', {
-        opacity: 0,
-        duration: 0.2
-      })
-      
-      gsap.to('.hamburger-bottom', {
-        y: -6,
-        rotate: -45,
-        duration: 0.3
-      })
-    } else {
-      // Close animation
-      gsap.to('.mobile-menu', {
-        height: 0,
-        opacity: 0,
-        duration: 0.4,
-        ease: 'power3.in'
-      })
-      
-      // X to hamburger animation
-      gsap.to('.hamburger-top', {
+        ease: 'power2.out',
+      });
+    };
+
+    const onHoverOut = () => {
+      if (bgTween.current) bgTween.current.kill();
+      bgTween.current = gsap.to(btn, {
+        duration: 0.8,
+        backgroundColor: '#fff',
+        ease: 'power2.inOut',
+      });
+
+      if (glowTween.current) glowTween.current.kill();
+      gsap.to(btn, {
+        boxShadow: 'none',
+        duration: 0.5,
+        ease: 'power2.inOut',
+      });
+
+      gsap.to(icon, {
+        x: 0,
         y: 0,
-        rotate: 0,
-        duration: 0.3
-      })
-      
-      gsap.to('.hamburger-middle', {
-        opacity: 1,
-        duration: 0.2,
-        delay: 0.1
-      })
-      
-      gsap.to('.hamburger-bottom', {
-        y: 0,
-        rotate: 0,
-        duration: 0.3
-      })
+        rotation: 0,
+        duration: 0.6,
+        ease: 'power2.inOut',
+      });
+    };
+
+    btn.addEventListener('mouseenter', onHoverIn);
+    btn.addEventListener('mouseleave', onHoverOut);
+
+    return () => {
+      btn.removeEventListener('mouseenter', onHoverIn);
+      btn.removeEventListener('mouseleave', onHoverOut);
+      if (glowTween.current) glowTween.current.kill();
+      if (bgTween.current) bgTween.current.kill();
+    };
+  }, []);
+
+  const scrollToSection = (id) => {
+    setIsMenuOpen(false);
+    const element = document.getElementById(id);
+    if (element) {
+      window.scrollTo({
+        top: element.offsetTop - 100,
+        behavior: 'smooth',
+      });
     }
-  }, [mobileMenuOpen])
+  };
 
   return (
-    <header 
+    <header
       ref={navbarRef}
-      className="fixed top-0 left-0 w-full z-50 bg-black/80 backdrop-blur-md border-b border-cyan-400/20 shadow-[0_0_20px_rgba(0,247,255,0.1)]"
+      className="fixed top-0 left-0 right-0 z-50 px-6 md:px-12 xl:px-28 2xl:px-56 opacity-0"
     >
-      {/* Floating particles */}
-      <div className="absolute inset-0 pointer-events-none">
-        {Array.from({ length: 15 }).map((_, i) => (
-          <div
-            key={i}
-            ref={el => particlesRef.current[i] = el}
-            className="absolute rounded-full bg-cyan-400/20"
-            style={{
-              width: `${gsap.utils.random(1, 3)}px`,
-              height: `${gsap.utils.random(1, 3)}px`,
-              top: `${gsap.utils.random(0, 100)}%`,
-              left: `${gsap.utils.random(0, 100)}%`,
-            }}
-          />
-        ))}
-      </div>
-      
-      <nav className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex justify-between items-center">
-        {/* Logo with glow effect */}
-        <Link href="#" className="relative group">
-          <div className="text-white text-xl font-bold tracking-wider">
-            <span className="text-cyan-400">MAFUJUR</span>.DEV
-          </div>
-          <div className="absolute -bottom-1 left-0 w-full h-0.5 bg-gradient-to-r from-cyan-400 to-emerald-400 rounded-full transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
-          <div className="absolute -inset-2 rounded-full bg-cyan-400/10 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
-        </Link>
-
-        {/* Desktop Navigation Links */}
-        <ul className="hidden md:flex space-x-8 text-white text-sm font-medium uppercase tracking-wider">
-          {links.map((link, idx) => {
-            const isActive = activeSection === link.toLowerCase()
-
-            return (
-              <li
-                key={link}
-                ref={el => (navItemsRef.current[idx] = el)}
-                className={`relative cursor-pointer py-2 transition-all duration-300 ${
-                  isActive ? 'text-cyan-400' : 'text-white'
-                }`}
-              >
-                <Link href={`#${link.toLowerCase()}`} scroll={false}>
-                  <span className="relative z-10">{link}</span>
-                  <div className="nav-highlight absolute bottom-0 left-0 h-[2px] bg-cyan-400 w-0"></div>
-                  {isActive && (
-                    <div className="absolute -bottom-1 left-0 w-full h-[2px] bg-cyan-400 rounded-full"></div>
-                  )}
-                </Link>
-              </li>
-            )
-          })}
-        </ul>
-        
-        {/* Contact button */}
-        <button className="hidden md:block px-5 py-2 bg-gradient-to-r from-cyan-600 to-emerald-500 rounded-full text-white font-medium text-sm tracking-wider shadow-[0_0_15px_rgba(0,247,255,0.3)] hover:shadow-[0_0_25px_rgba(0,247,255,0.5)] transition-all duration-300">
-          Contact
-        </button>
-
-        {/* Mobile menu button */}
-        <button 
-          className="md:hidden relative w-8 h-8 flex flex-col justify-center items-center z-50"
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+      <div className="relative h-20 mt-4 flex items-center justify-between ">
+        {/* Logo */}
+        <button
+          onClick={() => scrollToSection('hero')}
+          className="text-2xl font-bold text-white transition-colors"
         >
-          <div className="hamburger-top w-6 h-0.5 bg-cyan-400 mb-1.5 rounded-full transition-all"></div>
-          <div className="hamburger-middle w-6 h-0.5 bg-cyan-400 mb-1.5 rounded-full transition-all"></div>
-          <div className="hamburger-bottom w-6 h-0.5 bg-cyan-400 rounded-full transition-all"></div>
+          Mafujur<span className="text-[#09e5e5]"> Dev</span>
         </button>
-      </nav>
 
-      {/* Mobile Menu */}
-      <div className="mobile-menu absolute top-0 left-0 w-full h-0 bg-black/95 backdrop-blur-xl overflow-hidden z-40 opacity-0">
-        <div className="h-full flex flex-col justify-center items-center space-y-10 py-20">
-          {links.map((link, idx) => {
-            const isActive = activeSection === link.toLowerCase()
-            
-            return (
-              <Link 
-                key={link}
-                href={`#${link.toLowerCase()}`}
-                scroll={false}
-                className={`mobile-link text-xl font-medium uppercase tracking-wider relative px-4 py-2 ${
-                  isActive ? 'text-cyan-400' : 'text-white'
-                }`}
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                <span>{link}</span>
-                {isActive && (
-                  <div className="absolute bottom-0 left-0 w-full h-0.5 bg-cyan-400 rounded-full"></div>
-                )}
-              </Link>
-            )
-          })}
-          
-          <button className="mobile-link px-8 py-3 bg-gradient-to-r from-cyan-600 to-emerald-500 rounded-full text-white font-medium text-lg tracking-wider shadow-[0_0_15px_rgba(0,247,255,0.3)]">
-            Contact Me
-          </button>
+        {/* Center nav */}
+        <div className="hidden lg:flex items-center absolute left-1/2 transform -translate-x-1/2">
+          <div className="px-6 py-2 rounded-full border border-white/10 backdrop-blur-md bg-white/10 shadow-lg">
+            <nav className="flex space-x-10">
+              {[
+                { id: 'home', label: 'Home' },
+                { id: 'about', label: 'About' },
+                { id: 'skills', label: 'Skills' },
+                { id: 'projects', label: 'Projects' },
+                { id: 'achivement', label: 'Achivements' },
+              ].map((item) => (
+                <button
+                  key={item.id}
+                  onClick={() => scrollToSection(item.id)}
+                  className="text-white hover:text-[#09e5e5] cursor-pointer transition-colors duration-300 font-medium"
+                >
+                  {item.label}
+                </button>
+              ))}
+            </nav>
+          </div>
         </div>
+
+        {/* CTA Button */}
+        <button
+          onClick={() => scrollToSection('contact')}
+          className="hidden lg:flex px-6 py-2 border text-xs md:text-xs lg:text-[16px] xl:text-xl text-black bg-white hover:bg-[#09e5e5] hover:text-black transition rounded-full font-semibold"
+        >
+          Contact
+
+        </button>
+
+        {/* Mobile Menu Button */}
+        <button
+          className="menu-button lg:hidden text-white"
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+        >
+          <div className="w-8 h-8 relative">
+            <span
+              className={`absolute block w-full h-0.5 bg-white transform transition duration-300 ease-in-out ${isMenuOpen ? 'rotate-45 top-1/2' : 'top-1'
+                }`}
+            ></span>
+            <span
+              className={`absolute block w-full h-0.5 bg-white transform transition duration-300 ease-in-out ${isMenuOpen ? 'opacity-0' : 'top-1/2'
+                }`}
+            ></span>
+            <span
+              className={`absolute block w-full h-0.5 bg-white transform transition duration-300 ease-in-out ${isMenuOpen ? '-rotate-45 top-1/2' : 'top-3'
+                }`}
+            ></span>
+          </div>
+        </button>
       </div>
+
+      {/* Mobile Dropdown */}
+      {isMenuOpen && (
+        <div
+          ref={menuRef}
+          className="absolute top-20 left-0 w-full"
+          style={{
+            background: 'rgba(15, 23, 42, 0.95)',
+            backdropFilter: 'blur(12px)',
+            borderTop: '1px solid rgba(94, 234, 212, 0.1)',
+            borderBottom: '1px solid rgba(94, 234, 212, 0.1)',
+          }}
+        >
+          <div className="flex flex-col px-8 py-6">
+            {[
+              { id: 'services', label: 'Services' },
+              { id: 'stats', label: 'Stats' },
+              { id: 'blogs', label: 'Blogs' },
+              { id: 'pricing', label: 'Pricing' },
+              { id: 'contact', label: 'Contact Us' },
+            ].map((item) => (
+              <button
+                key={item.id}
+                onClick={() => scrollToSection(item.id)}
+                className="text-white py-3 px-4 hover:bg-cyan-900/30 rounded-lg transition-colors duration-300 font-medium border-b border-gray-800 last:border-0 text-left"
+              >
+                {item.label}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
     </header>
-  )
-}
+  );
+};
